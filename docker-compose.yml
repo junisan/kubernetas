@@ -1,0 +1,33 @@
+version: '3'
+
+networks:
+  customA:
+    driver: bridge
+  customB:
+    driver: bridge
+
+services:
+  php-fpm:
+    build:
+        context: ./php
+    volumes:
+        - ./code:/var/www
+    networks:
+        - "customA"
+        - "customB"
+  nginx:
+    build:
+        context: ./nginx
+    volumes:
+        - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
+        - ./code:/var/www
+    ports:
+        - "8000:80"
+    depends_on:
+        - php-fpm
+    networks:
+        - "customA"
+
+  other:
+    image: "debian:8.3"
+    command: /bin/bash -c "echo 'Stupid Container' && while true; do sleep infinity; done"
