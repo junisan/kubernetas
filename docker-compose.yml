@@ -15,6 +15,18 @@ services:
     networks:
         - "customA"
         - "customB"
+  mysql:
+    image: 'mysql:5.7'
+    environment:
+        MYSQL_DATABASE: 'db'
+        MYSQL_USER: 'user'
+        MYSQL_PASSWORD: 'password'
+        MYSQL_ROOT_PASSWORD: 'password'
+    expose:
+        - "3306"
+    networks:
+        - "customB"
+
   nginx:
     build:
         context: ./nginx
